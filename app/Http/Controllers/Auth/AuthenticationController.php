@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Resources\LoginResource;
 use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -26,8 +25,11 @@ class AuthenticationController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
-            'image' => $imagePath,
         ];
+
+        if ($imagePath) {
+            $userData['image'] = $imagePath;
+        }
 
         if (isset($validatedData['gender'])) {
             $userData['gender'] = $validatedData['gender'];
@@ -47,6 +49,10 @@ class AuthenticationController extends Controller
 
         if (isset($validatedData['weight'])) {
             $userData['weight'] = $validatedData['weight'];
+        }
+
+        if (isset($validatedData['description'])) {
+            $userData['description'] = $validatedData['description'];
         }
 
         $user = User::create($userData);
@@ -100,8 +106,11 @@ class AuthenticationController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
-            'image' => $imagePath,
         ];
+
+        if ($imagePath) {
+            $userData['image'] = $imagePath;
+        }
 
         if (isset($validatedData['gender'])) {
             $userData['gender'] = $validatedData['gender'];
@@ -121,6 +130,10 @@ class AuthenticationController extends Controller
 
         if (isset($validatedData['weight'])) {
             $userData['weight'] = $validatedData['weight'];
+        }
+
+        if (isset($validatedData['description'])) {
+            $userData['description'] = $validatedData['description'];
         }
 
         $user->update($userData);

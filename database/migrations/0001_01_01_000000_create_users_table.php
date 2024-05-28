@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('number')->nullable();
             $table->float('height')->nullable();
             $table->float('weight')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
 
