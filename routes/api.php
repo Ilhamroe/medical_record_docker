@@ -16,7 +16,7 @@ Route::get('/test', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     //route auth
     Route::get('/logout', [AuthenticationController::class, 'logout']);
-    Route::get('/user/Data', [AuthenticationController::class, 'index']);
+    Route::get('/user/data', [AuthenticationController::class, 'index']);
     Route::get('/user/data/{id}', [AuthenticationController::class, 'byId']);
     Route::patch('/user/update/{id}', [AuthenticationController::class, 'update']);
     Route::delete('/user/delete/{id}', [AuthenticationController::class, 'destroy']);
