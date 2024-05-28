@@ -68,7 +68,7 @@ class AuthenticationController extends Controller
     {
         $request->validated();
 
-        $user = User::whereMail($request->email)->first();
+        $user = User::whereEmail($request->email)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'Invalid Credentials'
