@@ -67,17 +67,20 @@ class AuthenticationController extends Controller
     public function login(LoginRequest $request)
     {
         $request->validated();
+        $identifier = $request->identifier;
+        $user = User::where('email', $identifier)
+            ->orWhere('username', $identifier)
+            ->first();
 
-        $user = User::whereName($request->name)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response([
+            return response()->json([
                 'message' => 'Invalid Credentials'
             ], 422);
         }
 
         $token = $user->createToken('medicalRecords')->plainTextToken;
 
-        return response([
+        return response()->json([
             'user' => $user,
             'token' => $token,
         ], 200);
