@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Clinic\ClinicController;
-use App\Http\Controllers\History\HistoryController;
-use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,7 +14,7 @@ Route::get('/test', function (Request $request) {
 Route::middleware(['auth:sanctum'])->group(function () {
     //route auth
     Route::get('/logout', [AuthenticationController::class, 'logout']);
-    // Route::get('/user/data', [AuthenticationController::class, 'index']);
+    Route::get('/user/data', [AuthenticationController::class, 'index']);
     Route::get('/user/data/{id}', [AuthenticationController::class, 'byId']);
     Route::patch('/user/update/{id}', [AuthenticationController::class, 'update']);
     Route::delete('/user/delete/{id}', [AuthenticationController::class, 'destroy']);
@@ -31,6 +29,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 //route auth
-Route::get('/user/data', [AuthenticationController::class, 'index']);
+// Route::get('/user/data', [AuthenticationController::class, 'index']);
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/login', [AuthenticationController::class, 'login']);
