@@ -29,6 +29,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 //route auth
-// Route::get('/user/data', [AuthenticationController::class, 'index']);
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/login', [AuthenticationController::class, 'login']);
