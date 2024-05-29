@@ -68,7 +68,7 @@ class AuthenticationController extends Controller
     {
         $request->validated();
 
-        $user = User::whereName($request->name)->first();
+        $user = User::whereEmail($request->email)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'Invalid Credentials'
@@ -176,6 +176,7 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
+    //fungsi getAllData via login
     public function index()
     {
         $user = User::all();
@@ -184,6 +185,7 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
+    //fungsi data byId via login
     public function byId($id)
     {
         $user = User::findOrFail($id);
