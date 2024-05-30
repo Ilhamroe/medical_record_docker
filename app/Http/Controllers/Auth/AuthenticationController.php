@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Requests\UpdateRequest;
 use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -89,7 +88,7 @@ class AuthenticationController extends Controller
         ]);
     }
 
-    public function update(UpdateRequest $request, $id)
+    public function update(RegisterRequest $request, $id)
     {
         $user = User::findOrFail($id);
 
@@ -103,11 +102,8 @@ class AuthenticationController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
+            'image' => $imagePath,
         ];
-
-        if ($imagePath) {
-            $userData['image'] = $imagePath;
-        }
 
         if (isset($validatedData['gender'])) {
             $userData['gender'] = $validatedData['gender'];
