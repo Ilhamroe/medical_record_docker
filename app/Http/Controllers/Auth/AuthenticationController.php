@@ -108,10 +108,11 @@ class AuthenticationController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         $user = User::findOrFail($id);
-
         $validatedData = $request->validated();
 
         $imagePath = $this->handleImageUpload($request, 'image', $user->image);
+
+        $userData = [];
 
         if (isset($validatedData['name'])) {
             $userData['name'] = $validatedData['name'];
@@ -119,8 +120,8 @@ class AuthenticationController extends Controller
 
         if (isset($validatedData['nrp'])) {
             $userData['nrp'] = $validatedData['nrp'];
-
         }
+
         if (isset($validatedData['email'])) {
             $userData['email'] = $validatedData['email'];
         }
@@ -161,13 +162,15 @@ class AuthenticationController extends Controller
             $userData['description'] = $validatedData['description'];
         }
 
-        $user->update($userData);
+        $user->fill($userData);
+        $user->save();
 
         return response()->json([
             'message' => 'User updated successfully',
             'user' => $user
         ], 200);
     }
+
 
     private function handleImageUpload($request, $fieldName, $existingImagePath = null)
     {
