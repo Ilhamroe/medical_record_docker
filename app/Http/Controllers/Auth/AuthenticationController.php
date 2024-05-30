@@ -8,6 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateRequest;
 use App\Models\Clinic;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -65,34 +66,34 @@ class AuthenticationController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        // $request->validated();
+        $request->validated();
 
-        // $user = User::whereName($request->name)->first();
-        // if (!$user || !Hash::check($request->password, $user->password)) {
-        //     return response([
-        //         'message' => 'Invalid Credentials'
-        //     ], 422);
-        // }
-
-        // $token = $user->createToken('medicalRecords')->plainTextToken;
-
-        // return response([
-        //     'user' => $user,
-        //     'token' => $token,
-        // ], 200);
-
-        $credentials = request()->only(['email', 'password']);
-        if (auth()->attempt($credentials)) {
-            return response(['message' => 'Invalid Credentials'], 422);
+        $user = User::whereEmail($request->email)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'message' => 'Invalid Credentials'
+            ], 422);
         }
 
-        $user = auth()->user();
-        return response()->json([
+        $token = $user->createToken('medicalRecords')->plainTextToken;
+
+        return response([
             'user' => $user,
-            'token' => $user->createToken('medicalRecords')->plainTextToken
-        ]);
+            'token' => $token,
+        ], 200);
+
+        // $credentials = request()->only(['email', 'password']);
+        // if (Auth::guard('api')->attempt($credentials)) {
+        //     return response(['message' => 'Invalid Credentials'], 422);
+        // }
+
+        // $user = auth()->user();
+        // return response()->json([
+        //     'user' => $user,
+        //     'token' => $user->createToken('medicalRecords')->plainTextToken
+        // ]);
     }
 
     public function logout(Request $request)
