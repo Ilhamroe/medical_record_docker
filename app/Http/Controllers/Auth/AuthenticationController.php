@@ -102,8 +102,11 @@ class AuthenticationController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
-            'image' => $imagePath,
         ];
+
+        if ($imagePath) {
+            $userData['image'] = $imagePath;
+        }
 
         if (isset($validatedData['gender'])) {
             $userData['gender'] = $validatedData['gender'];
