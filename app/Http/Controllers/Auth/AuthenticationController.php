@@ -18,6 +18,7 @@ class AuthenticationController extends Controller
     public function register(RegisterRequest $request)
     {
         $validatedData = $request->validated();
+
         $imagePath = $this->handleImageUpload($request, 'image');
 
         $userData = [
@@ -26,28 +27,46 @@ class AuthenticationController extends Controller
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
             'role' => $validatedData['role'],
-            'image' => $imagePath ?? null,
-            'gender' => $validatedData['gender'] ?? null,
-            'birth' => isset($validatedData['birth']) ? date('Y-m-d', strtotime($validatedData['birth'])) : null,
-            'number' => $validatedData['number'] ?? null,
-            'height' => $validatedData['height'] ?? null,
-            'weight' => $validatedData['weight'] ?? null,
-            'description' => $validatedData['description'] ?? null,
         ];
 
+        if ($imagePath) {
+            $userData['image'] = $imagePath;
+        }
+
+        if (isset($validatedData['gender'])) {
+            $userData['gender'] = $validatedData['gender'];
+        }
+
+        if (isset($validatedData['birth'])) {
+            $userData['birth'] = date('Y-m-d', strtotime($validatedData['birth']));
+        }
+
+        if (isset($validatedData['number'])) {
+            $userData['number'] = $validatedData['number'];
+        }
+
+        if (isset($validatedData['height'])) {
+            $userData['height'] = $validatedData['height'];
+        }
+
+        if (isset($validatedData['weight'])) {
+            $userData['weight'] = $validatedData['weight'];
+        }
+
         $user = User::create($userData);
+        $token = $user->createToken('medicalRecords')->plainTextToken;
 
         return response([
             'user' => $user,
-        ], 201);
+        ]);
     }
 
     public function login(LoginRequest $request)
     {
-        $validatedData = $request->validated();
+        $request->validated();
 
-        $user = User::whereEmail($validatedData['email'])->first();
-        if (!$user || !Hash::check($validatedData['password'], $user->password)) {
+        $user = User::whereEmail($request->email)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'Invalid Credentials'
             ], 422);
@@ -67,29 +86,48 @@ class AuthenticationController extends Controller
 
         return response([
             'message' => 'Logged out successfully'
-        ], 200);
+        ]);
     }
 
     public function update(UpdateRequest $request, $id)
     {
         $user = User::findOrFail($id);
+
         $validatedData = $request->validated();
+
         $imagePath = $this->handleImageUpload($request, 'image', $user->image);
 
         $userData = [
-            'name' => $validatedData['name'] ?? $user->name,
-            'nrp' => $validatedData['nrp'] ?? $user->nrp,
-            'email' => $validatedData['email'] ?? $user->email,
-            'password' => isset($validatedData['password']) ? Hash::make($validatedData['password']) : $user->password,
-            'role' => $validatedData['role'] ?? $user->role,
-            'image' => $imagePath ?? $user->image,
-            'gender' => $validatedData['gender'] ?? $user->gender,
-            'birth' => isset($validatedData['birth']) ? date('Y-m-d', strtotime($validatedData['birth'])) : $user->birth,
-            'number' => $validatedData['number'] ?? $user->number,
-            'height' => $validatedData['height'] ?? $user->height,
-            'weight' => $validatedData['weight'] ?? $user->weight,
-            'description' => $validatedData['description'] ?? $user->description,
+            'name' => $validatedData['name'],
+            'nrp' => $validatedData['nrp'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'role' => $validatedData['role'],
         ];
+
+        if ($imagePath) {
+            $userData['image'] = $imagePath;
+        }
+
+        if (isset($validatedData['gender'])) {
+            $userData['gender'] = $validatedData['gender'];
+        }
+
+        if (isset($validatedData['birth'])) {
+            $userData['birth'] = date('Y-m-d', strtotime($validatedData['birth']));
+        }
+
+        if (isset($validatedData['number'])) {
+            $userData['number'] = $validatedData['number'];
+        }
+
+        if (isset($validatedData['height'])) {
+            $userData['height'] = $validatedData['height'];
+        }
+
+        if (isset($validatedData['weight'])) {
+            $userData['weight'] = $validatedData['weight'];
+        }
 
         $user->update($userData);
 
@@ -98,7 +136,6 @@ class AuthenticationController extends Controller
             'user' => $user
         ], 200);
     }
-
 
     private function handleImageUpload($request, $fieldName, $existingImagePath = null)
     {
@@ -124,6 +161,7 @@ class AuthenticationController extends Controller
         }
 
         Clinic::where('patient_id', $id)->delete();
+
         $user->delete();
 
         return response()->json([
@@ -133,9 +171,9 @@ class AuthenticationController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $user = User::all();
         return response([
-            'users' => $users,
+            'user' => $user,
         ], 200);
     }
 
