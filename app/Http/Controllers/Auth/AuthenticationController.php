@@ -53,7 +53,6 @@ class AuthenticationController extends Controller
         }
 
         $user = User::create($userData);
-        $token = $user->createToken('medicalRecords')->plainTextToken;
 
         return response([
             'user' => $user,
