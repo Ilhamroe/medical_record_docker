@@ -36,11 +36,9 @@ class AuthenticationController extends Controller
         ];
 
         $user = User::create($userData);
-        $token = $user->createToken('medicalRecords')->plainTextToken;
 
         return response([
             'user' => $user,
-            'token' => $token,
         ], 201);
     }
 
@@ -100,6 +98,7 @@ class AuthenticationController extends Controller
             'user' => $user
         ], 200);
     }
+
 
     private function handleImageUpload($request, $fieldName, $existingImagePath = null)
     {
