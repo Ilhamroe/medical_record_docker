@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateRequest;
 use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -92,7 +93,7 @@ class AuthenticationController extends Controller
         ]);
     }
 
-    public function update(RegisterRequest $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         $user = User::findOrFail($id);
 
@@ -100,13 +101,25 @@ class AuthenticationController extends Controller
 
         $imagePath = $this->handleImageUpload($request, 'image', $user->image);
 
-        $userData = [
-            'name' => $validatedData['name'],
-            'nrp' => $validatedData['nrp'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
-            'role' => $validatedData['role'],
-        ];
+        if (isset($validatedData['name'])) {
+            $userData['name'] = $validatedData['name'];
+        }
+
+        if (isset($validatedData['nrp'])) {
+            $userData['nrp'] = $validatedData['nrp'];
+
+        }
+        if (isset($validatedData['email'])) {
+            $userData['email'] = $validatedData['email'];
+        }
+        
+        if (!empty($validatedData['password'])) {
+            $userData['password'] = Hash::make($validatedData['password']);
+        }
+
+        if (isset($validatedData['role'])) {
+            $userData['role'] = $validatedData['role'];
+        }
 
         if ($imagePath) {
             $userData['image'] = $imagePath;
