@@ -33,6 +33,7 @@ class RegisterRequest extends FormRequest
             'number' => 'nullable|string|max:15',
             'height' => 'nullable|numeric',
             'weight' => 'nullable|numeric',
+            'description' => 'nullable|string|max:255'
         ];
     }
 }

@@ -65,23 +65,34 @@ class AuthenticationController extends Controller
         ]);
     }
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
-        $request->validated();
+        // $request->validated();
 
-        $user = User::whereName($request->name)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response([
-                'message' => 'Invalid Credentials'
-            ], 422);
+        // $user = User::whereName($request->name)->first();
+        // if (!$user || !Hash::check($request->password, $user->password)) {
+        //     return response([
+        //         'message' => 'Invalid Credentials'
+        //     ], 422);
+        // }
+
+        // $token = $user->createToken('medicalRecords')->plainTextToken;
+
+        // return response([
+        //     'user' => $user,
+        //     'token' => $token,
+        // ], 200);
+
+        $credentials = request()->only(['email', 'password']);
+        if (auth()->attempt($credentials)) {
+            return response(['message' => 'Invalid Credentials'], 422);
         }
 
-        $token = $user->createToken('medicalRecords')->plainTextToken;
-
-        return response([
+        $user = auth()->user();
+        return response()->json([
             'user' => $user,
-            'token' => $token,
-        ], 200);
+            'token' => $user->createToken('medicalRecords')->plainTextToken
+        ]);
     }
 
     public function logout(Request $request)
@@ -112,7 +123,7 @@ class AuthenticationController extends Controller
         if (isset($validatedData['email'])) {
             $userData['email'] = $validatedData['email'];
         }
-        
+
         if (!empty($validatedData['password'])) {
             $userData['password'] = Hash::make($validatedData['password']);
         }
