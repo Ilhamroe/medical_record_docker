@@ -1,53 +1,45 @@
 version: "3.8"
-
 services:
     app:
         build:
-            context: .
+            args:
+                user: medicaluser
+                uid: 1000
+            context: ./
             dockerfile: Dockerfile
         container_name: laravel-app
         restart: unless-stopped
-        tty: true
-        environment:
-            SERVICE_NAME: app
-            SERVICE_TAGS: dev
-        working_dir: /var/www
+        working_dir: /var/www/
         volumes:
-            - .:/var/www
-            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+            - ./:/var/www
         networks:
-            - laravel
-        ports:
-            - "9000:9000"
-        depends_on:
-            - mysql
-
-    mysql:
-        image: mysql:5.7
-        container_name: laravel-mysql
+            - medical-network
+    db:
+        image: mysql:8.0
+        container_name: laravel-db
         restart: unless-stopped
-        tty: true
         environment:
-            MYSQL_DATABASE: medical_records
-            MYSQL_USER: medical_user
-            MYSQL_PASSWORD: medicalpass
-            MYSQL_ROOT_PASSWORD: medicalpass
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_USER: ${DB_USERNAME}
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
         volumes:
-            - dbdata:/var/lib/mysql
-        ports:
-            - "3306:3306"
+            - ./docker-compose/mysql:/docker-entrypoint-initdb.d
         networks:
-            - laravel
-        healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-            interval: 30s
-            timeout: 10s
-            retries: 5
-
+            - medical-network
+    nginx:
+        image: nginx:alpine
+        container_name: laravel-nginx
+        restart: unless-stopped
+        ports:
+            - 8000:80
+        volumes:
+            - ./:/var/www
+            - ./docker-compose/nginx:/etc/nginx/conf.d/
+        networks:
+            - medical-network
 networks:
-    laravel:
+    medical-network:
         driver: bridge
-
-volumes:
-    dbdata:
-        driver: local
