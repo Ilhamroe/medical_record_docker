@@ -28,9 +28,9 @@ services:
         tty: true
         environment:
             MYSQL_DATABASE: medical_records
-            MYSQL_USER: root
-            MYSQL_PASSWORD:
-            MYSQL_ROOT_PASSWORD:
+            MYSQL_USER: medical_user
+            MYSQL_PASSWORD: medicalpass
+            MYSQL_ROOT_PASSWORD: medicalpass
         volumes:
             - dbdata:/var/lib/mysql
         ports:

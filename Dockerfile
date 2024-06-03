@@ -1,4 +1,3 @@
-# Dockerfile
 FROM php:8.2-fpm
 
 # Set working directory
@@ -16,7 +15,8 @@ RUN apt-get update && apt-get install -y \
     vim \
     unzip \
     git \
-    curl
+    curl \
+    libonig-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -27,13 +27,17 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Modify PHP-FPM configuration to comment out user and group directives
+RUN sed -i 's/^user = .*/;user = www-data/' /usr/local/etc/php-fpm.d/www.conf && \
+    sed -i 's/^group = .*/;group = www-data/' /usr/local/etc/php-fpm.d/www.conf
+
 # Copy existing application directory contents
 COPY . /var/www
 
 # Copy existing application directory permissions
 COPY --chown=www-data:www-data . /var/www
 
-# Change current user to www
+# Change current user to www-data
 USER www-data
 
 # Expose port 9000 and start php-fpm server
