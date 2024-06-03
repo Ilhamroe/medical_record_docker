@@ -5,7 +5,6 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        image: laravel-app
         container_name: laravel-app
         restart: unless-stopped
         tty: true
@@ -20,6 +19,8 @@ services:
             - laravel
         ports:
             - "9000:9000"
+        depends_on:
+            - mysql
 
     mysql:
         image: mysql:5.7
@@ -37,6 +38,11 @@ services:
             - "3306:3306"
         networks:
             - laravel
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
 
 networks:
     laravel:
