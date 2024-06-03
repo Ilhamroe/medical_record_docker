@@ -125,7 +125,6 @@ class AuthenticationController extends Controller
         ], 200);
     }
 
-
     private function handleImageUpload($request, $fieldName, $existingImagePath = null)
     {
         if ($request->hasFile($fieldName)) {
