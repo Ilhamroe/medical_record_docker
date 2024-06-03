@@ -1,45 +1,17 @@
 FROM php:8.2-fpm
-
-# Set working directory
-WORKDIR /var/www
-
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    locales \
-    zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
+ARG user
+ARG uid
+RUN apt update && apt install -y \
     git \
     curl \
-    libonig-dev
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install PHP extensions
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev
+RUN apt clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
-
-# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Modify PHP-FPM configuration to comment out user and group directives
-RUN sed -i 's/^user = .*/;user = www-data/' /usr/local/etc/php-fpm.d/www.conf && \
-    sed -i 's/^group = .*/;group = www-data/' /usr/local/etc/php-fpm.d/www.conf
-
-# Copy existing application directory contents
-COPY . /var/www
-
-# Copy existing application directory permissions
-COPY --chown=www-data:www-data . /var/www
-
-# Change current user to www-data
-USER www-data
-
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+WORKDIR /var/www
+USER $user
