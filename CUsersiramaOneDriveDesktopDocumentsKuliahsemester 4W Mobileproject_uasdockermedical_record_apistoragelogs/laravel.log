@@ -1,0 +1,22 @@
+[2024-06-10 14:13:42] production.ERROR: The "C:\Users\irama\OneDrive\Desktop\Documents\Kuliah\semester 4\W Mobile\project_uas\docker\medical_record_api\resources\views" directory does not exist. {"exception":"[object] (Symfony\\Component\\Finder\\Exception\\DirectoryNotFoundException(code: 0): The \"C:\\Users\\irama\\OneDrive\\Desktop\\Documents\\Kuliah\\semester 4\\W Mobile\\project_uas\\docker\\medical_record_api\\resources\\views\" directory does not exist. at /var/www/vendor/symfony/finder/Finder.php:646)
+[stacktrace]
+#0 /var/www/vendor/laravel/framework/src/Illuminate/Foundation/Console/ViewCacheCommand.php(88): Symfony\\Component\\Finder\\Finder->in(Array)
+#1 /var/www/vendor/laravel/framework/src/Illuminate/Foundation/Console/ViewCacheCommand.php(43): Illuminate\\Foundation\\Console\\ViewCacheCommand->bladeFilesIn(Array)
+#2 /var/www/vendor/laravel/framework/src/Illuminate/Collections/Traits/EnumeratesValues.php(237): Illuminate\\Foundation\\Console\\ViewCacheCommand->Illuminate\\Foundation\\Console\\{closure}('C:\\\\Users\\\\irama\\\\...', 0)
+#3 /var/www/vendor/laravel/framework/src/Illuminate/Foundation/Console/ViewCacheCommand.php(38): Illuminate\\Support\\Collection->each(Object(Closure))
+#4 /var/www/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(36): Illuminate\\Foundation\\Console\\ViewCacheCommand->handle()
+#5 /var/www/vendor/laravel/framework/src/Illuminate/Container/Util.php(41): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#6 /var/www/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(93): Illuminate\\Container\\Util::unwrapIfClosure(Object(Closure))
+#7 /var/www/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(35): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#8 /var/www/vendor/laravel/framework/src/Illuminate/Container/Container.php(662): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#9 /var/www/vendor/laravel/framework/src/Illuminate/Console/Command.php(212): Illuminate\\Container\\Container->call(Array)
+#10 /var/www/vendor/symfony/console/Command/Command.php(279): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#11 /var/www/vendor/laravel/framework/src/Illuminate/Console/Command.php(181): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#12 /var/www/vendor/symfony/console/Application.php(1049): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 /var/www/vendor/symfony/console/Application.php(318): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Foundation\\Console\\ViewCacheCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 /var/www/vendor/symfony/console/Application.php(169): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 /var/www/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(196): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 /var/www/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1187): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 /var/www/artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#18 {main}
+"} 
