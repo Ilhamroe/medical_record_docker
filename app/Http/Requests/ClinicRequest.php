@@ -24,6 +24,7 @@ class ClinicRequest extends FormRequest
         return [
             'patient_id' => 'required',
             'symptom' => 'required',
+            'dated' => 'required',
             'diagnosis' => 'required',
             'drug' => 'required',
             'advice' => 'required',

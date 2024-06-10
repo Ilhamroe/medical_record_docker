@@ -49,6 +49,7 @@ class ClinicController extends Controller
                 return [
                     'id' => $dataHistoryUser->id,
                     'doctor' => $dataHistoryUser->doctor->name,
+                    'dated' => $dataHistoryUser->dated,
                     'symptom' => $dataHistoryUser->symptom,
                     'diagnosis' => $dataHistoryUser->diagnosis,
                     'drug' => $dataHistoryUser->drug,
@@ -82,6 +83,7 @@ class ClinicController extends Controller
                 return [
                     'id' => $dataHistoryUser->id,
                     'name' => $dataHistoryUser->patient->name,
+                    'dated' => $dataHistoryUser->dated,
                     'symptom' => $dataHistoryUser->symptom,
                     'diagnosis' => $dataHistoryUser->diagnosis,
                     'drug' => $dataHistoryUser->drug,
@@ -110,6 +112,7 @@ class ClinicController extends Controller
         Clinic::create([
             'doctor_id' => Auth::user()->id,
             'patient_id' => $validatedData['patient_id'],
+            'dated' => $validatedData['dated'],
             'symptom' => $validatedData['symptom'],
             'diagnosis' => $validatedData['diagnosis'],
             'drug' => $validatedData['drug'],
@@ -135,6 +138,7 @@ class ClinicController extends Controller
 
         $clinic->update([
             'user_id' => Auth::user()->id,
+            'dated' => $validatedData['dated'],
             'symptom' => $validatedData['symptom'],
             'diagnosis' => $validatedData['diagnosis'],
             'drug' => $validatedData['drug'],

@@ -18,6 +18,7 @@ class ClinicResource extends JsonResource
             'id' => $this->id,
             'dokter' => $this->doctor->name,
             'patient' => $this->patient->name,
+            'dated' => $this->dated,
             'symptom' => $this->symptom,
             'diagnosis' => $this->diagnosis,
             'drug' => $this->drug,
